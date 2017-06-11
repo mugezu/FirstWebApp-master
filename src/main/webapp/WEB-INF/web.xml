@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<web-app>
+
+    <display-name>HelloWorld Application</display-name>
+    <welcome-file-list>
+        <welcome-file>front.jsp</welcome-file>
+        <!--  <welcome-file>login.jsp</welcome-file>-->
+    </welcome-file-list>
+
+    <servlet>
+        <servlet-name>loginController</servlet-name>
+        <servlet-class>controller.LoginController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginController</servlet-name>
+        <url-pattern>/login.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>productController</servlet-name>
+        <servlet-class>controller.ProductController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>productController</servlet-name>
+        <url-pattern>/allProducts.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>storeController</servlet-name>
+        <servlet-class>controller.StoreController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>storeController</servlet-name>
+        <url-pattern>/buyProduct.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>basketController</servlet-name>
+        <servlet-class>controller.BasketController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>basketController</servlet-name>
+        <url-pattern>/basket.html</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>cookieFilter</filter-name>
+        <filter-class>filter.CookieFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>cookieFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>sessionFilter</filter-name>
+        <filter-class>filter.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>sessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>requestFilter</filter-name>
+        <filter-class>filter.RequestInfoFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>requestFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>dataFilter</filter-name>
+        <filter-class>filter.DataFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>dataFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <resource-ref>
+        <description>DB Connection</description>
+        <res-ref-name>jdbc/appname</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+</web-app>
