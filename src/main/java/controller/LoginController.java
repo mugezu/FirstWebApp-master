@@ -2,6 +2,8 @@ package controller;
 
 import ClassJava.User;
 import DAO.*;
+import DB.DataBase;
+import DB.ThreadCache;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,6 +23,8 @@ public class LoginController extends HttpServlet {
     private static final String PAGE_OK = "login.jsp";
     private static final String PAGE_ERROR_ACCESS = "error.jsp";
 
+    private final static String conn = "CONNECTION";
+
     private UserDao userDao = new UserDaoMock();
 
     @Override
@@ -28,6 +32,9 @@ public class LoginController extends HttpServlet {
         String login = request.getParameter(PARAM_LOGIN);
         String password = request.getParameter(PARAM_PASSWORD);
         try {
+
+            ThreadCache.getInstance().setCache(conn, DataBase.getInstance().getConnection());
+            System.out.println(ThreadCache.getInstance().getCache(conn));
             User model = userDao.selectByLoginPassword(login, password);
             request.setAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER, model);
             RequestDispatcher view = request.getRequestDispatcher(PAGE_OK);

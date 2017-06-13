@@ -20,10 +20,9 @@ public class ProductDaoInfo implements ProductDao {
     private final static Map<Integer, Product> productsBase = new ConcurrentHashMap<>();
 
     public ProductDaoInfo() {
-        try {
-            Connection connection = new DataBase().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = DataBase.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
@@ -35,13 +34,12 @@ public class ProductDaoInfo implements ProductDao {
         }
     }
 
-
     @Override
     public Product selectById(int id) throws DaoSystemException, NoSuchEntityException {
         Product product;
         product = productsBase.get(id);
         if (product == null) {
-            throw new NoSuchEntityException("No product by current id");
+            throw new NoSuchEntityException("No product by selected id");
         }
         return product;
     }
@@ -50,7 +48,7 @@ public class ProductDaoInfo implements ProductDao {
     public List<Product> selectAll() throws DaoSystemException {
         List<Product> products = new CopyOnWriteArrayList();
         if (productsBase == null)
-            throw new DaoSystemException("Base empty");
+            throw new DaoSystemException("Data base empty");
         for (Integer key : productsBase.keySet()) {
             products.add(productsBase.get(key));
         }
