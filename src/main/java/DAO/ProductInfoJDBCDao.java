@@ -15,11 +15,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Created by user on 21.11.2016.
  */
-public class ProductDaoInfo implements ProductDao {
+public class ProductInfoJDBCDao implements ProductDao {
     private static final String SQL = "SELECT * FROM productdb";
     private final static Map<Integer, Product> productsBase = new ConcurrentHashMap<>();
 
-    public ProductDaoInfo() {
+    public ProductInfoJDBCDao() {
         try (Connection connection = DataBase.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL);
              ResultSet resultSet = preparedStatement.executeQuery()) {

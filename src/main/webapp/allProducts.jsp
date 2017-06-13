@@ -17,7 +17,7 @@
     <c:set var="total" value="${total + p.value}"/>
 </c:forEach>
 <b2>
-    Количество товаров в корзине: ${total}
+    Количество товаров в корзине: ${total} на сумму ${totalMoney}
 </b2>
 <c:forEach var="product" items="${products}">
     <li>

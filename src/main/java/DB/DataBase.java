@@ -10,15 +10,10 @@ import java.sql.SQLException;
  * Created by Роман on 10.06.2017.
  */
 public class DataBase {
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/mydbtest?serverTimezone=UTC";
-
-    static final String USER = "root";
-    static final String PASS = "root";
 
     private static DataBase dataBase;
 
-    static DataSource poolDataSource = null;
+    private static DataSource poolDataSource = null;
 
     private DataBase() {
         // Class.forName(JDBC_DRIVER);
@@ -47,11 +42,6 @@ public class DataBase {
 
     public Connection getConnection() throws SQLException {
         Connection connection = poolDataSource.getConnection();
-        connection.setAutoCommit(false);
         return connection;
-    }
-
-    public void closeConnection(Connection connection) throws SQLException {
-        connection.close();
     }
 }

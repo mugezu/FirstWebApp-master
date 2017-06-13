@@ -1,7 +1,7 @@
 package DAO;
 
 import ClassJava.User;
-import DB.ThreadCache;
+import DB.DataBase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,43 +11,37 @@ import java.sql.SQLException;
 /**
  * Created by user on 17.11.2016.
  */
-public class UserDaoMock implements UserDao {
-   private final static String CONNECTION="CONNECTION";
+public class UserJDBCDao implements UserDao {
+    private final static String CONNECTION = "CONNECTION";
 
-    public UserDaoMock() {
+    public UserJDBCDao() {
     }
 
     @Override
-    public User selectByLoginPassword(String login, String password) throws DaoSystemException, NoSuchEntityException, NoAccessException {
+    public User selectByLoginPassword(String login, String password) throws DaoSystemException, NoSuchEntityException, NoAccessException, SQLException {
         User resutl = null;
         ResultSet rs = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String SQL = "SELECT name, password FROM userdb WHERE name=? AND password=?";
         try {
-            connection = (Connection) ThreadCache.getInstance().getCache(CONNECTION);
-            System.out.println(connection);
+            connection = DataBase.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             rs = preparedStatement.executeQuery();
-            rs.next();
-            resutl = new User(rs.getString("name"), rs.getString("password"));
-            connection.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            connection.rollback();
-        } finally {
-            try {
-                rs.close();
-                preparedStatement.close();
-                preparedStatement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                return resutl;
+            if (!rs.next()) {
+                throw new NoSuchEntityException("Unknown user");
             }
+            resutl = new User(rs.getString("name"), rs.getString("password"));
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (preparedStatement != null)
+                preparedStatement.close();
+            if (connection != null)
+                connection.close();
         }
+        return resutl;
     }
 }

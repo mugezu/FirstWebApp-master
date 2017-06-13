@@ -4,7 +4,7 @@
 
     <display-name>HelloWorld Application</display-name>
     <welcome-file-list>
-        <welcome-file>front.jsp</welcome-file>
+        <welcome-file>login.do</welcome-file>
         <!--  <welcome-file>login.jsp</welcome-file>-->
     </welcome-file-list>
 
@@ -14,7 +14,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>loginController</servlet-name>
-        <url-pattern>/login.html</url-pattern>
+        <url-pattern>/login.do</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -45,32 +45,41 @@
         <url-pattern>/basket.html</url-pattern>
     </servlet-mapping>
 
-    <filter>
-        <filter-name>cookieFilter</filter-name>
-        <filter-class>filter.CookieFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>cookieFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>sessionFilter</filter-name>
-        <filter-class>filter.SessionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>sessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <servlet>
+        <servlet-name>buyOrderController</servlet-name>
+        <servlet-class>controller.BuyOrderController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>buyOrderController</servlet-name>
+        <url-pattern>/buyOrder.html</url-pattern>
+    </servlet-mapping>
+
+    <!--  <filter>
+           <filter-name>cookieFilter</filter-name>
+           <filter-class>filter.CookieFilter</filter-class>
+       </filter>
+       <filter-mapping>
+           <filter-name>cookieFilter</filter-name>
+           <url-pattern>/*</url-pattern>
+       </filter-mapping>
+       <filter>
+          <filter-name>sessionFilter</filter-name>
+          <filter-class>filter.SessionFilter</filter-class>
+      </filter>
+      <filter-mapping>
+          <filter-name>sessionFilter</filter-name>
+          <url-pattern>/*</url-pattern>
+      </filter-mapping>
 
 
-    <filter>
-        <filter-name>requestFilter</filter-name>
-        <filter-class>filter.RequestInfoFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>requestFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+      <filter>
+          <filter-name>requestFilter</filter-name>
+          <filter-class>filter.RequestInfoFilter</filter-class>
+      </filter>
+      <filter-mapping>
+          <filter-name>requestFilter</filter-name>
+          <url-pattern>/*</url-pattern>
+      </filter-mapping>-->
 
     <filter>
         <filter-name>dataFilter</filter-name>
@@ -81,7 +90,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-  <resource-ref>
+    <resource-ref>
         <description>DB Connection</description>
         <res-ref-name>jdbc/mydbtest</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>

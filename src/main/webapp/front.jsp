@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Entry</h1>
-<form action="login.html" method="post" autocomplete="on">
+<form action="login.do" method="post" autocomplete="on">
     <label>
         Login
         <input type="text" name="login" required>

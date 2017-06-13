@@ -21,7 +21,6 @@
     Количество товаров в корзине: ${total}
 </b2>
 </c:if>
-<c:set var="totalMoney" value="${0}"/>
 <c:forEach var="product" items="${basketProducts}">
     <li>
         <b2>Продукт</b2>
@@ -30,14 +29,14 @@
             Наименование: ${product.key.name} Количество: ${product.value}
             Суммарная стоимость: ${product.value*product.key.price}
         </b2>
-        <c:set var="totalMoney" value="${totalMoney + product.value*product.key.price}"/>
     </li>
 </c:forEach>
 <c:if test="${total>0}">
     <b2>
-        У вас в корзине покупок на суму: ${totalMoney}
+        У вас в корзине покупок на сумму: ${totalMoney}
     </b2>
 </c:if>
-
+<br/>
+<a href="/buyOrder.html">Оплатить заказ</a>
 </body>
 </html>

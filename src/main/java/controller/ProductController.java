@@ -3,7 +3,7 @@ package controller;
 import ClassJava.Product;
 import DAO.DaoSystemException;
 import DAO.ProductDao;
-import DAO.ProductDaoInfo;
+import DAO.ProductInfoJDBCDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +24,7 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Product> product;
         try {
-            ProductDao p = new ProductDaoInfo();
+            ProductDao p = new ProductInfoJDBCDao();
             product = p.selectAll();
             req.setAttribute(ATTRIBUTE_ALL_PRODUCTS, product);
             req.getRequestDispatcher(PAGE_OK).forward(req, resp);

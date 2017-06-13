@@ -2,11 +2,10 @@ package controller;
 
 import ClassJava.User;
 import DAO.*;
-import DB.DataBase;
-import DB.ThreadCache;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,29 +20,53 @@ public class LoginController extends HttpServlet {
     private static final String PARAM_PASSWORD = "password";
     private static final String ATTRIBUTE_MODEL_TO_VIEW_USER = "user";
     private static final String PAGE_OK = "login.jsp";
-    private static final String PAGE_ERROR_ACCESS = "error.jsp";
+    private static final String PAGE_ERROR_ACCESS = "front.jsp";
 
-    private final static String conn = "CONNECTION";
-
-    private UserDao userDao = new UserDaoMock();
+    private UserDao userDao = new UserJDBCDao();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = request.getParameter(PARAM_LOGIN);
-        String password = request.getParameter(PARAM_PASSWORD);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = req.getParameter(PARAM_LOGIN);
+        String password = req.getParameter(PARAM_PASSWORD);
         try {
-
-            ThreadCache.getInstance().setCache(conn, DataBase.getInstance().getConnection());
-            System.out.println(ThreadCache.getInstance().getCache(conn));
             User model = userDao.selectByLoginPassword(login, password);
-            request.setAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER, model);
-            RequestDispatcher view = request.getRequestDispatcher(PAGE_OK);
-            view.forward(request, response);
+            resp.addCookie(new Cookie(PARAM_LOGIN, model.getLogin()));
+            resp.addCookie(new Cookie(PARAM_PASSWORD, model.getPassword()));
+            req.getSession().setAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER, model);
+            RequestDispatcher view = req.getRequestDispatcher(PAGE_OK);
+            view.forward(req, resp);
             return;
         } catch (NoAccessException | NoSuchEntityException | DaoSystemException e) {
+            System.out.println(e.getMessage());
         } catch (SQLException sql) {
             sql.printStackTrace();
         }
-        response.sendRedirect(PAGE_ERROR_ACCESS);
+        resp.sendRedirect(PAGE_ERROR_ACCESS);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = null;
+        String password = null;
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null)
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals(PARAM_LOGIN)) {
+                    login = cookies[i].getValue();
+                }
+                if (cookies[i].getName().equals(PARAM_PASSWORD))
+                    password = cookies[i].getValue();
+            }
+        try {
+            System.out.println(login + " " + password);
+            User model = userDao.selectByLoginPassword(login, password);
+            req.getSession().setAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER, model);
+            RequestDispatcher view = req.getRequestDispatcher(PAGE_OK);
+            view.forward(req, resp);
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        resp.sendRedirect(PAGE_ERROR_ACCESS);
     }
 }

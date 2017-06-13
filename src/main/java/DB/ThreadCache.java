@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ThreadCache {
     private static ThreadCache singliton;
 
-    private InheritableThreadLocal<Map<String, Object>> cache;
+    private static InheritableThreadLocal<Map<String, Object>> cache;
 
     private ThreadCache() {
         cache = new InheritableThreadLocal<>();
@@ -24,10 +24,12 @@ public class ThreadCache {
     }
 
     public Object getCache(String key) {
-        return cache.get().get(key);
+        return singliton.cache.get().get(key);
     }
 
     public void setCache(String key, Object value) {
-        cache.get().put(key, value);
+        System.out.println(singliton.cache.get());
+        singliton.cache.get().put(key, value);
+        System.out.println(singliton.cache.get());
     }
 }
