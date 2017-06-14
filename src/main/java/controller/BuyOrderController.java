@@ -21,7 +21,6 @@ public class BuyOrderController extends HttpServlet {
     private static final String Attribute_TotalMoney = "totalMoney";
     private static final String Attribute_storeProducts = "basketProducts";
     private static final String PARAM_LOGIN = "login";
-    private static final String PARAM_PASSWORD = "password";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

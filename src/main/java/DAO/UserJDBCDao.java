@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * Created by user on 17.11.2016.
  */
 public class UserJDBCDao implements UserDao {
-    private final static String CONNECTION = "CONNECTION";
+    String SQL = "SELECT name, password FROM userdb WHERE name=? AND password=?";
 
     public UserJDBCDao() {
     }
@@ -23,7 +23,6 @@ public class UserJDBCDao implements UserDao {
         ResultSet rs = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String SQL = "SELECT name, password FROM userdb WHERE name=? AND password=?";
         try {
             connection = DataBase.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(SQL);
