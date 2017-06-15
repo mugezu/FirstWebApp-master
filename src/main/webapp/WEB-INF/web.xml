@@ -4,8 +4,7 @@
 
     <display-name>HelloWorld Application</display-name>
     <welcome-file-list>
-        <welcome-file>login.do</welcome-file>
-        <!--  <welcome-file>login.jsp</welcome-file>-->
+        <welcome-file>front.jsp</welcome-file>
     </welcome-file-list>
 
     <servlet>
@@ -54,6 +53,15 @@
         <url-pattern>/buyOrder.html</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>listOrderController</servlet-name>
+        <servlet-class>controller.ListOrderController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>listOrderController</servlet-name>
+        <url-pattern>/allOrder.html</url-pattern>
+    </servlet-mapping>
+
     <!--  <filter>
            <filter-name>cookieFilter</filter-name>
            <filter-class>filter.CookieFilter</filter-class>
@@ -90,11 +98,11 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <resource-ref>
+   <!-- <resource-ref>
         <description>DB Connection</description>
         <res-ref-name>jdbc/mydbtest</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
-    </resource-ref>
+    </resource-ref>-->
 
 </web-app>

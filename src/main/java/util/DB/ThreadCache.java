@@ -1,4 +1,4 @@
-package DB;
+package util.DB;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

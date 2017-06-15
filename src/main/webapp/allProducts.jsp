@@ -13,8 +13,8 @@
 </head>
 <body>
 <c:set var="total" value="${0}"/>
-<c:forEach var="p" items="${basketProducts}">
-    <c:set var="total" value="${total + p.value}"/>
+<c:forEach var="product" items="${basketProducts}">
+    <c:set var="total" value="${total + product.value}"/>
 </c:forEach>
 <b2>
     Количество товаров в корзине: ${total} на сумму ${totalMoney}

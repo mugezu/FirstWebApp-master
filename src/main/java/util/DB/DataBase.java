@@ -1,4 +1,4 @@
-package DB;
+package util.DB;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

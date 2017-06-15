@@ -3,7 +3,8 @@ package controller;
 import ClassJava.Product;
 import DAO.DaoSystemException;
 import DAO.ProductDao;
-import DAO.ProductInfoJDBCDao;
+import DAO.UserDao;
+import util.Spring.SpringContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,12 +21,13 @@ public class ProductController extends HttpServlet {
     private static final String PAGE_OK = "allProducts.jsp";
     private static final String PAGE_ERROR_ACCESS = "error.jsp";
 
+    private ProductDao productDao = (ProductDao) SpringContext.getInstance().getContext().getBean("productDao");
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Product> product;
         try {
-            ProductDao p = new ProductInfoJDBCDao();
-            product = p.selectAll();
+            product = productDao.selectAll();
             req.setAttribute(ATTRIBUTE_ALL_PRODUCTS, product);
             req.getRequestDispatcher(PAGE_OK).forward(req, resp);
             return;

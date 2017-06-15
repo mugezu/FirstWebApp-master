@@ -4,12 +4,12 @@
     <title>Добро пожаловать</title>
 </head>
 <body>
-</b2>Добро пожаловать ${user.login}
+</b2>Добро пожаловать ${user.name}
 <br/>
 <a href="/allProducts.html"> Список товаров </a>
 <br/>
 <br/>
-<a href="/allOrder.html"> Список заказов </a>
+<a href="/allOrder.html"> Ваш список заказов </a>
 <br/>
 </body>
 </html>

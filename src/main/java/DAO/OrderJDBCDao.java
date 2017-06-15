@@ -1,7 +1,7 @@
 package DAO;
 
 import ClassJava.Order;
-import DB.DataBase;
+import util.DB.DataBase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,19 +15,16 @@ import java.util.List;
  */
 public class OrderJDBCDao implements OrderDao {
     @Override
-    public List<Order> selectByName_bayer(String name_bayer) throws DaoSystemException, NoAccessException, NoSuchEntityException {
-        String SQL = "SELECT * FROM basket_products WHERE name_bayer=?";
+    public List<Order> selectByName_buyer(String name_buyer) throws DaoSystemException, NoAccessException, NoSuchEntityException {
+        String SQL = "SELECT * FROM basket_products WHERE name_buyer=?";
         List<Order> result = new ArrayList<>();
         try (Connection connection = DataBase.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
-            preparedStatement.setString(1, name_bayer);
+            preparedStatement.setString(1, name_buyer);
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 while (resultSet.next()) {
-                    Order model = new Order();
-                    model.setId_order(resultSet.getInt("id_order"));
-                    model.setName_buyer(name_bayer);
-                    model.setList_product(resultSet.getString("list_product"));
-                    model.setSumm_order(resultSet.getInt("summ_order"));
+                    Order model = null;
+                    //TODO
                     result.add(model);
                 }
             }
@@ -46,5 +43,10 @@ public class OrderJDBCDao implements OrderDao {
     @Override
     public Order selectById_order(int id_order) throws DaoSystemException, NoAccessException, NoSuchEntityException {
         return null;
+    }
+
+    @Override
+    public boolean addOrder(List<Order> orders) throws DaoSystemException, NoAccessException, NoSuchEntityException {
+        return false;
     }
 }

@@ -27,7 +27,6 @@ public class StoreController extends HttpServlet {
     private static final String PAGE_ERROR = "error.jsp";
     private static final String PAGE_OK = "allProducts.html";
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer id = Integer.valueOf(req.getParameter(PARAM_ID));

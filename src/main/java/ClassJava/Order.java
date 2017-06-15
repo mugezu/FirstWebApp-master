@@ -1,44 +1,27 @@
 package ClassJava;
 
-import DAO.ProductDao;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Date;
 
 /**
  * Created by Роман on 14.06.2017.
  */
 public class Order {
     private int id_order;
-    private String name_buyer;
-    private Map<ProductDao, Integer> list_product;
-    private int summ_order;
+    private int id_buyer;
+    private int id_product;
+    private int count_product;
+    private Date date;
 
     public Order() {
-        list_product = new ConcurrentHashMap<>();
-
     }
 
-    public Order(int id_order, String name_buyer, Map<ProductDao, Integer> list_product, int summ_order) {
+    public Order(int id_order, int id_buyer, int id_product, int count_product, Date date) {
         this.id_order = id_order;
-        this.name_buyer = name_buyer;
-        this.list_product = list_product;
-        this.summ_order = summ_order;
+        this.id_buyer = id_buyer;
+        this.id_product = id_product;
+        this.count_product = count_product;
+        this.date = date;
     }
-
-    public Order(int id_order, String name_buyer, String json, int summ_order) {
-        Type itemsMapType = new TypeToken<Map<Product, Integer>>() {
-        }.getType();
-
-        this.list_product = new Gson().fromJson(json, itemsMapType);
-        this.id_order = id_order;
-        this.name_buyer = name_buyer;
-        this.summ_order = summ_order;
-    }
-
 
     public int getId_order() {
         return id_order;
@@ -48,34 +31,59 @@ public class Order {
         this.id_order = id_order;
     }
 
-    public String getName_buyer() {
-        return name_buyer;
+    public int getId_buyer() {
+        return id_buyer;
     }
 
-    public void setName_buyer(String name_buyer) {
-        this.name_buyer = name_buyer;
+    public void setId_buyer(int id_buyer) {
+        this.id_buyer = id_buyer;
     }
 
-    public Map<ProductDao, Integer> getList_product() {
-        return list_product;
+    public int getId_product() {
+        return id_product;
     }
 
-    public void setList_product(String json) {
-        Type itemsMapType = new TypeToken<Map<Product, Integer>>() {
-        }.getType();
-
-        this.list_product = new Gson().fromJson(json, itemsMapType);
+    public void setId_product(int id_product) {
+        this.id_product = id_product;
     }
 
-    public void setList_product(Map<ProductDao, Integer> list_product) {
-        this.list_product = list_product;
+    public int getCount_product() {
+        return count_product;
     }
 
-    public int getSumm_order() {
-        return summ_order;
+    public void setCount_product(int count_product) {
+        this.count_product = count_product;
     }
 
-    public void setSumm_order(int summ_order) {
-        this.summ_order = summ_order;
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        if (id_order != order.id_order) return false;
+        if (id_buyer != order.id_buyer) return false;
+        if (id_product != order.id_product) return false;
+        if (count_product != order.count_product) return false;
+        return date != null ? date.equals(order.date) : order.date == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id_order;
+        result = 31 * result + id_buyer;
+        result = 31 * result + id_product;
+        result = 31 * result + count_product;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 }

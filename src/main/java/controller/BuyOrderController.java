@@ -1,8 +1,9 @@
 package controller;
 
+import ClassJava.Order;
 import ClassJava.Product;
-import DB.DataBase;
 import com.google.gson.Gson;
+import util.DB.DataBase;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -11,7 +12,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Created by Роман on 13.06.2017.
@@ -34,8 +36,10 @@ public class BuyOrderController extends HttpServlet {
                     login = cookies[i].getValue();
                 }
             }
-        HashMap<Product, Integer> products = (HashMap) session.getAttribute(Attribute_storeProducts);
-        String json = new Gson().toJson(products);
+        Map<Product, Integer> products = (Map) session.getAttribute(Attribute_storeProducts);
+        String json;
+        json = new Gson().toJson(products);
+        System.out.println(json);
         Integer total = (Integer) session.getAttribute(Attribute_TotalMoney);
         try (Connection connection = DataBase.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
@@ -43,8 +47,7 @@ public class BuyOrderController extends HttpServlet {
             preparedStatement.setString(2, json);
             preparedStatement.setInt(3, total);
             preparedStatement.setDate(4, new Date(System.currentTimeMillis()));
-            int executeUpdate = preparedStatement.executeUpdate();
-            System.out.println(executeUpdate);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

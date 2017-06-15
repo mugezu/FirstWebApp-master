@@ -1,7 +1,13 @@
 package DAO;
 
 import ClassJava.Product;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import util.DB.DataBase;
+import util.Hiber.Hiber;
+import util.Hiber.Model.ProductdbEntity;
+import util.Hiber.Model.UserdbEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,17 +16,25 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Created by user on 21.11.2016.
+ * Created by Роман on 15.06.2017.
  */
-public class ProductInfoJDBCDao implements ProductDao {
-    private static final String SQL = "SELECT * FROM productdb";
+public class ProductHiberDao implements ProductDao {
     private final static Map<Integer, Product> productsBase = new ConcurrentHashMap<>();
+    public ProductHiberDao(){
+   /*     List<Product> products;
+        Session session = null;
+        try {
+            session = Hiber.getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(ProductdbEntity.class);
 
-    public ProductInfoJDBCDao() {
-        try (Connection connection = DataBase.getInstance().getConnection();
+            products = criteria.list();
+            if (products.isEmpty()) {
+                throw new DaoSystemException("Empty shop");
+            }
+
+            try (Connection connection = DataBase.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -31,28 +45,17 @@ public class ProductInfoJDBCDao implements ProductDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
+
     public Product selectById(int id) throws DaoSystemException, NoSuchEntityException {
-        Product product;
-        product = productsBase.get(id);
-        if (product == null) {
-            throw new NoSuchEntityException("No product by selected id");
-        }
-        return product;
+        return null;
     }
 
     @Override
     public List<Product> selectAll() throws DaoSystemException {
-        List<Product> products = new CopyOnWriteArrayList();
-        if (productsBase == null)
-            throw new DaoSystemException("Data base empty");
-        for (Integer key : productsBase.keySet()) {
-            products.add(productsBase.get(key));
-        }
-        return products;
-
+        return null;
     }
 }
