@@ -1,5 +1,8 @@
 package filter;
 
+import util.Hiber.Hiber;
+import util.Spring.SpringContext;
+
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -7,9 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Enumeration;
-import java.util.LinkedList;
 
 /**
  * Created by user on 17.11.2016.
@@ -20,6 +21,10 @@ public class DataFilter extends AbstractFilter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         System.out.println(">>Init DataFilter");
+        System.out.println(">>Init Hibernate");
+        Hiber.getSessionFactory();
+        System.out.println(">>Init SpringContext");
+        SpringContext.getInstance();
         this.filterConfig = filterConfig;
     }
 
@@ -44,7 +49,7 @@ public class DataFilter extends AbstractFilter {
         }
         System.out.println();
         System.out.println(">>Cookie:");
-        if(cookieEnum!=null) {
+        if (cookieEnum != null) {
             for (int i = 0; i < cookieEnum.length; i++) {
                 System.out.println(">>" + cookieEnum[i].getName() + " = " + cookieEnum[i].getValue());
             }

@@ -13,21 +13,21 @@
 </head>
 <body>
 <c:set var="total" value="${0}"/>
-<c:forEach var="product" items="${basketProducts}">
-    <c:set var="total" value="${total + product.value}"/>
+<c:forEach var="productdbEntity" items="${basketProducts}">
+    <c:set var="total" value="${total + productdbEntity.value}"/>
 </c:forEach>
 <c:if test="${total>0}">
 <b2>
     Количество товаров в корзине: ${total}
 </b2>
 </c:if>
-<c:forEach var="product" items="${basketProducts}">
+<c:forEach var="productdbEntity" items="${basketProducts}">
     <li>
         <b2>Продукт</b2>
         <br/>
         <b2>
-            Наименование: ${product.key.name} Количество: ${product.value}
-            Суммарная стоимость: ${product.value*product.key.price}
+            Наименование: ${productdbEntity.key.name} Количество: ${productdbEntity.value}
+            Суммарная стоимость: ${productdbEntity.value*productdbEntity.key.price}
         </b2>
     </li>
 </c:forEach>

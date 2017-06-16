@@ -4,16 +4,17 @@ import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by Роман on 15.06.2017.
+ * Created by Роман on 16.06.2017.
  */
 @Entity
-@Table(name = "userdb", schema = "mydbtest")
+@Table(name = "userdb")
 public class UserdbEntity {
     private int id;
     private String name;
     private String password;
     private String email;
     private Collection<BasketProductsEntity> basketProductsById;
+    private RoleEntity roleByUserRole;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -46,7 +47,7 @@ public class UserdbEntity {
     }
 
     @Basic
-    @Column(name = "email", nullable = true, length = 45)
+    @Column(name = "email", nullable = false, length = 45)
     public String getEmail() {
         return email;
     }
@@ -87,4 +88,16 @@ public class UserdbEntity {
     public void setBasketProductsById(Collection<BasketProductsEntity> basketProductsById) {
         this.basketProductsById = basketProductsById;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_role", referencedColumnName = "role", nullable = false)
+    public RoleEntity getRoleByUserRole() {
+        return roleByUserRole;
+    }
+
+    public void setRoleByUserRole(RoleEntity roleByUserRole) {
+        this.roleByUserRole = roleByUserRole;
+    }
+
+
 }

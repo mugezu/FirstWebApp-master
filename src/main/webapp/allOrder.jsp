@@ -13,22 +13,27 @@
 </head>
 <body>
 <c:forEach var="order" items="${orders}">
-    <li>
-    <b2>Код заказа: ${order.id_order} </b2>
-    <br/>
-    <b2>Имя получателя: ${order.name_buyer} Цена:</b2>
-    <br/>
-    <b2>Список товаров</b2>
-    <c:forEach var="product" items="${order.list_product}">
-        <li>
-            <c:set var="key" value="${product.key}"/>
-            <b2>Название <c:out${key.name} Цена ${key.price} Количество: ${product.value}</b2>
+    <c:if test="${id_order != order.idOrder}">
+        <c:if test="${summ>0 }">
+            <b2>Сумма заказа: ${summ}</b2>
             <br/>
-
-        </li>
-    </c:forEach>
-    <b2>Сумма заказа: ${order.summ_order} Цена:</b2>
-    </li>
+        </c:if>
+        <c:set var="summ" value="${0}"/>
+        <b2>================================</b2>
+        <br/>
+        <b2>Код заказа: ${order.idOrder} Дата: ${order.date}</b2>
+        <br/>
+        <b2>Список товаров</b2>
+        <br/>
+    </c:if>
+    <b2>${order.productdbByIdProduct.name} Цена: ${order.productdbByIdProduct.price}
+        Количество: ${order.countProduct} </b2>
+    <c:set var="summ" value="${summ+order.productdbByIdProduct.price*order.countProduct}"/>
+    <br/>
+    <c:set var="id_order" value="${order.idOrder}"/>
 </c:forEach>
+<b2>Сумма заказа: ${summ}</b2>
+<br/>
+<b2>================================</b2>
 </body>
 </html>

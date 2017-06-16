@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="userDao" class="DAO.UserHiberDao"/>
-    <bean id="productDao" class="DAO.ProductInfoJDBCDao"/>
-    <bean id="orderDao" class="DAO.OrderJDBCDao"/>
+    <bean id="productDao" class="DAO.ProductHiberDao" scope="prototype"/>
+    <bean id="orderDao" class="DAO.OrderHiberDao" scope="prototype"/>
 
 </beans>

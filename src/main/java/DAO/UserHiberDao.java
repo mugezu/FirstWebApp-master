@@ -20,8 +20,6 @@ public class UserHiberDao implements UserDao {
         Session session = null;
         try {
             session = Hiber.getSessionFactory().openSession();
-            System.out.println(session.isConnected());
-            System.out.println("l=" + login + " p=" + password);
             Criteria criteria = session.createCriteria(UserdbEntity.class);
             criteria.add(Restrictions.eq("name", login));
             criteria.add(Restrictions.eq("password", password));
@@ -31,7 +29,7 @@ public class UserHiberDao implements UserDao {
             }
             resutl = userbd.get(0);
         } finally {
-            if (session.isConnected())
+            if (!session.isConnected())
                 session.close();
         }
         return resutl;

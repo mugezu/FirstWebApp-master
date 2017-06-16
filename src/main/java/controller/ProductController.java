@@ -1,9 +1,8 @@
 package controller;
 
-import ClassJava.Product;
 import DAO.DaoSystemException;
 import DAO.ProductDao;
-import DAO.UserDao;
+import util.Hiber.Model.ProductdbEntity;
 import util.Spring.SpringContext;
 
 import javax.servlet.ServletException;
@@ -25,10 +24,10 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Product> product;
+        List<ProductdbEntity> productdbEntity;
         try {
-            product = productDao.selectAll();
-            req.setAttribute(ATTRIBUTE_ALL_PRODUCTS, product);
+            productdbEntity = productDao.selectAll();
+            req.setAttribute(ATTRIBUTE_ALL_PRODUCTS, productdbEntity);
             req.getRequestDispatcher(PAGE_OK).forward(req, resp);
             return;
         } catch (DaoSystemException e) {

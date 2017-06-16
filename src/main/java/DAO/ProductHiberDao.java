@@ -1,61 +1,57 @@
 package DAO;
 
-import ClassJava.Product;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import util.DB.DataBase;
 import util.Hiber.Hiber;
 import util.Hiber.Model.ProductdbEntity;
-import util.Hiber.Model.UserdbEntity;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Роман on 15.06.2017.
  */
 public class ProductHiberDao implements ProductDao {
-    private final static Map<Integer, Product> productsBase = new ConcurrentHashMap<>();
-    public ProductHiberDao(){
-   /*     List<Product> products;
+    private final static Map<Integer, ProductdbEntity> productsBase = new ConcurrentHashMap<>();
+
+    public ProductHiberDao() {
+        List<ProductdbEntity> productdbEntities;
         Session session = null;
         try {
             session = Hiber.getSessionFactory().openSession();
-            Criteria criteria = session.createCriteria(ProductdbEntity.class);
-
-            products = criteria.list();
-            if (products.isEmpty()) {
-                throw new DaoSystemException("Empty shop");
+            Criteria criteria = session.createCriteria(util.Hiber.Model.ProductdbEntity.class);
+            productdbEntities = criteria.list();
+            for (ProductdbEntity productdbEntity : productdbEntities) {
+                int id = productdbEntity.getId();
+                this.productsBase.put(id, productdbEntity);
             }
-
-            try (Connection connection = DataBase.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                int price = resultSet.getInt("price");
-                this.productsBase.put(id, new Product(id, name, price));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+        } finally {
+            if (session.isConnected())
+                session.close();
+        }
     }
 
     @Override
-
-    public Product selectById(int id) throws DaoSystemException, NoSuchEntityException {
-        return null;
+    public ProductdbEntity selectById(int id) throws DaoSystemException, NoSuchEntityException {
+        ProductdbEntity productdbEntity;
+        productdbEntity = productsBase.get(id);
+        if (productdbEntity == null) {
+            throw new NoSuchEntityException("No productdbEntity by selected id");
+        }
+        return productdbEntity;
     }
 
     @Override
-    public List<Product> selectAll() throws DaoSystemException {
-        return null;
+    public List<ProductdbEntity> selectAll() throws DaoSystemException {
+        List<ProductdbEntity> productdbEntities = new CopyOnWriteArrayList();
+        if (productsBase == null)
+            throw new DaoSystemException("Data base empty");
+        for (Integer key : productsBase.keySet()) {
+            productdbEntities.add(productsBase.get(key));
+        }
+        return productdbEntities;
+
     }
 }

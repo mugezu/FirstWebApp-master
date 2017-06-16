@@ -1,17 +1,24 @@
 package controller;
 
-import ClassJava.Order;
-import ClassJava.Product;
-import com.google.gson.Gson;
-import util.DB.DataBase;
+import DAO.DaoSystemException;
+import DAO.NoAccessException;
+import DAO.NoSuchEntityException;
+import DAO.OrderDao;
+import util.Hiber.Model.BasketProductsEntity;
+import util.Hiber.Model.ProductdbEntity;
+import util.Hiber.Model.UserdbEntity;
+import util.Spring.SpringContext;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -20,37 +27,37 @@ import java.util.Map;
  */
 public class BuyOrderController extends HttpServlet {
     private static final String PAGE_ERROR = "error.jsp";
-    private static final String Attribute_TotalMoney = "totalMoney";
     private static final String Attribute_storeProducts = "basketProducts";
-    private static final String PARAM_LOGIN = "login";
+    private static final String Attribute_TotalMoney = "totalMoney";
+    private static final String ATTRIBUTE_MODEL_TO_VIEW_USER = "user";
+
+    private static OrderDao orderDao = (OrderDao) SpringContext.getInstance().getContext().getBean("orderDao");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String login = null;
-        Cookie[] cookies = req.getCookies();
-        String SQL = "INSERT INTO basket_products (name_buyer,list_product,summ_order,date) VALUE (?,?,?,?)";
-        if (cookies != null)
-            for (int i = 0; i < cookies.length; i++) {
-                if (cookies[i].getName().equals(PARAM_LOGIN)) {
-                    login = cookies[i].getValue();
-                }
-            }
-        Map<Product, Integer> products = (Map) session.getAttribute(Attribute_storeProducts);
-        String json;
-        json = new Gson().toJson(products);
-        System.out.println(json);
-        Integer total = (Integer) session.getAttribute(Attribute_TotalMoney);
-        try (Connection connection = DataBase.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, json);
-            preparedStatement.setInt(3, total);
-            preparedStatement.setDate(4, new Date(System.currentTimeMillis()));
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
+        UserdbEntity user = (UserdbEntity) session.getAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER);
+        Map<ProductdbEntity, Integer> products = (Map) session.getAttribute(Attribute_storeProducts);
+        Iterator<ProductdbEntity> iProsucts = products.keySet().iterator();
+        Iterator<Integer> iCountProduct = products.values().iterator();
+        List<BasketProductsEntity> basket = new LinkedList<>();
+        int i = 0;
+        while (iProsucts.hasNext()) {
+            BasketProductsEntity oneOrder = new BasketProductsEntity();
+            oneOrder.setCountProduct(iCountProduct.next());
+            oneOrder.setUserdbByIdBuyer(user);
+            oneOrder.setProductdbByIdProduct(iProsucts.next());
+            oneOrder.setDate(new Date(System.currentTimeMillis()));
+            basket.add(oneOrder);
+            i++;
+        }
+        try {
+            orderDao.addOrder(basket);
+            session.setAttribute(Attribute_storeProducts, null);
+            session.setAttribute(Attribute_TotalMoney, null);
+        } catch (DaoSystemException | NoAccessException | NoSuchEntityException e) {
             e.printStackTrace();
         }
-    }
 
+    }
 }

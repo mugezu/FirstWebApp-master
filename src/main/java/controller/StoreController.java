@@ -1,10 +1,10 @@
 package controller;
 
-import ClassJava.Product;
 import DAO.DaoSystemException;
 import DAO.NoSuchEntityException;
 import DAO.ProductDao;
-import DAO.ProductInfoJDBCDao;
+import util.Hiber.Model.ProductdbEntity;
+import util.Spring.SpringContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,21 +33,21 @@ public class StoreController extends HttpServlet {
         if (id != null) {
             try {
                 HttpSession session = req.getSession();
-                Map<Product, Integer> oldStore;
-                ProductDao p = new ProductInfoJDBCDao();
-                Product product = p.selectById(id);
-                Integer total = (Integer) session.getAttribute(Attribute_TotalMoney);
+                Map<ProductdbEntity, Integer> oldStore;
+                ProductDao p = (ProductDao) SpringContext.getInstance().getContext().getBean("productDao");
+                ProductdbEntity productdbEntity = p.selectById(id);
+                Long total = (Long) session.getAttribute(Attribute_TotalMoney);
                 oldStore = (Map) session.getAttribute(Attribute_storeProducts);
                 if (oldStore == null) {
-                    session.setAttribute(Attribute_storeProducts, singletonMap(product, 1));
-                    session.setAttribute(Attribute_TotalMoney, product.getPrice());
+                    session.setAttribute(Attribute_storeProducts, singletonMap(productdbEntity, 1));
+                    session.setAttribute(Attribute_TotalMoney, productdbEntity.getPrice());
                 } else {
-                    Map<Product, Integer> newStore = new LinkedHashMap<>(oldStore);
-                    Integer newTotal = total + product.getPrice();
-                    if (!oldStore.containsKey(product)) {
-                        newStore.put(product, 1);
+                    Map<ProductdbEntity, Integer> newStore = new LinkedHashMap<>(oldStore);
+                    Long newTotal = total + productdbEntity.getPrice();
+                    if (!oldStore.containsKey(productdbEntity)) {
+                        newStore.put(productdbEntity, 1);
                     } else {
-                        newStore.put(product, newStore.get(product) + 1);
+                        newStore.put(productdbEntity, newStore.get(productdbEntity) + 1);
                     }
                     session.setAttribute(Attribute_storeProducts, newStore);
                     session.setAttribute(Attribute_TotalMoney, newTotal);

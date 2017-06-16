@@ -4,10 +4,10 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by Роман on 15.06.2017.
+ * Created by Роман on 16.06.2017.
  */
 @Entity
-@Table(name = "basket_products", schema = "mydbtest")
+@Table(name = "basket_products")
 public class BasketProductsEntity {
     private int id;
     private int idOrder;
@@ -17,6 +17,7 @@ public class BasketProductsEntity {
     private ProductdbEntity productdbByIdProduct;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -98,5 +99,17 @@ public class BasketProductsEntity {
 
     public void setProductdbByIdProduct(ProductdbEntity productdbByIdProduct) {
         this.productdbByIdProduct = productdbByIdProduct;
+    }
+
+    @Override
+    public String toString() {
+        return "BasketProductsEntity{" +
+                "id=" + id +
+                ", idOrder=" + idOrder +
+                ", countProduct=" + countProduct +
+                ", date=" + date +
+                ", userdbByIdBuyer=" + userdbByIdBuyer +
+                ", productdbByIdProduct=" + productdbByIdProduct +
+                '}';
     }
 }

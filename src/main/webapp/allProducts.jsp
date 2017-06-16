@@ -13,18 +13,23 @@
 </head>
 <body>
 <c:set var="total" value="${0}"/>
-<c:forEach var="product" items="${basketProducts}">
-    <c:set var="total" value="${total + product.value}"/>
+<c:forEach var="productdbEntity" items="${basketProducts}">
+    <c:set var="total" value="${total + productdbEntity.value}"/>
 </c:forEach>
 <b2>
     Количество товаров в корзине: ${total} на сумму ${totalMoney}
 </b2>
-<c:forEach var="product" items="${products}">
+<c:forEach var="productdbEntity" items="${products}">
     <li>
         <b2>Продукт</b2>
         <br/>
-        <b2>Наименование: ${product.name} Цена: ${product.price}
-            <a href="./buyProduct.html?id=${product.id}">Купить товар</a></b2>
+        <b2>Наименование: ${productdbEntity.name} Цена: ${productdbEntity.price}</b2>
+        <br/>
+        <b2>Описание</b2>
+        <br/>
+        <b2>${productdbEntity.description}</b2>
+        <br/>
+        <b2><a href="./buyProduct.html?id=${productdbEntity.id}">Купить товар</a></b2>
     </li>
 </c:forEach>
 <a href="./basket.html"> Перейти в корзину</a>

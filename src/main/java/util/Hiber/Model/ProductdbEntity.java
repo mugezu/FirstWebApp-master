@@ -4,10 +4,10 @@ import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by Роман on 15.06.2017.
+ * Created by Роман on 16.06.2017.
  */
 @Entity
-@Table(name = "productdb", schema = "mydbtest")
+@Table(name = "productdb")
 public class ProductdbEntity {
     private int id;
     private String name;
@@ -100,4 +100,5 @@ public class ProductdbEntity {
     public void setBasketProductsById(Collection<BasketProductsEntity> basketProductsById) {
         this.basketProductsById = basketProductsById;
     }
+
 }

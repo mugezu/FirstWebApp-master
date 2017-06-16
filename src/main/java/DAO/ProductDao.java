@@ -1,6 +1,6 @@
 package DAO;
 
-import ClassJava.Product;
+import util.Hiber.Model.ProductdbEntity;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import java.util.List;
  */
 public interface ProductDao {
 
-    public Product selectById(int id) throws DaoSystemException, NoSuchEntityException;
+    public ProductdbEntity selectById(int id) throws DaoSystemException, NoSuchEntityException;
 
-    public List<Product> selectAll() throws DaoSystemException;
+    public List<ProductdbEntity> selectAll() throws DaoSystemException;
 
 }
