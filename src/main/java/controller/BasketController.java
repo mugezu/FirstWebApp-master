@@ -9,10 +9,9 @@ import java.io.IOException;
 /**
  * Created by user on 22.11.2016.
  */
-public class BasketController extends HttpServlet {
+public class BasketController extends AbstractHttpServlet  {
     private static final String PAGE_ERROR = "error.jsp";
     private static final String PAGE_OK = "basket.jsp";
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

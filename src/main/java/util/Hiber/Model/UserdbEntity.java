@@ -8,24 +8,12 @@ import java.util.Collection;
  */
 @Entity
 @Table(name = "userdb")
-public class UserdbEntity {
-    private int id;
+public class UserdbEntity extends AbstractModel {
     private String name;
     private String password;
     private String email;
     private Collection<BasketProductsEntity> basketProductsById;
     private RoleEntity roleByUserRole;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "name", nullable = false, length = 45)

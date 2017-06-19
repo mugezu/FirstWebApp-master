@@ -7,6 +7,11 @@
         <welcome-file>front.jsp</welcome-file>
     </welcome-file-list>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/config.xml</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>loginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
@@ -96,7 +101,7 @@
       <filter-mapping>
           <filter-name>requestFilter</filter-name>
           <url-pattern>/*</url-pattern>
-      </filter-mapping>-->
+      </filter-mapping>
 
     <filter>
         <filter-name>dataFilter</filter-name>

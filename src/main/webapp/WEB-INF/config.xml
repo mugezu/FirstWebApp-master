@@ -3,8 +3,20 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="userDao" class="DAO.UserHiberDao"/>
+    <bean id="userDao" class="DAO.UserHiberDao" scope="prototype"/>
     <bean id="productDao" class="DAO.ProductHiberDao" scope="prototype"/>
     <bean id="orderDao" class="DAO.OrderHiberDao" scope="prototype"/>
+
+
+
+ <!--   <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="testjpa" />
+    </bean>
+
+    <bean id="entityManager"
+          class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>-->
 
 </beans>

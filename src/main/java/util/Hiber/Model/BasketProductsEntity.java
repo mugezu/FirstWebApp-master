@@ -8,24 +8,13 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "basket_products")
-public class BasketProductsEntity {
-    private int id;
+public class BasketProductsEntity extends AbstractModel {
     private int idOrder;
     private int countProduct;
     private Date date;
     private UserdbEntity userdbByIdBuyer;
     private ProductdbEntity productdbByIdProduct;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "id_order", nullable = false)

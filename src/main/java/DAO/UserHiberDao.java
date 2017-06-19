@@ -15,9 +15,14 @@ import java.util.List;
 /**
  * Created by Роман on 15.06.2017.
  */
-public class UserHiberDao implements UserDao {
+public class UserHiberDao extends GenericDAO<UserdbEntity> implements UserDao {
+
+    //  private EntityManager entityManager = (EntityManager) SpringContext.getInstance().getContext().getBean("entityManager");
+
     @Override
     public UserdbEntity selectByLoginPassword(String login, String password) throws DaoSystemException, NoSuchEntityException, NoAccessException {
+        System.out.println("------------------------ id:" + System.identityHashCode(this));
+
         UserdbEntity resutl;
         List<UserdbEntity> userbd;
         Session session = null;
@@ -38,7 +43,7 @@ public class UserHiberDao implements UserDao {
         return resutl;
     }
 
-    @Override
+
     public UserdbEntity registrationUser(String login, String password, String email) throws DaoSystemException, NoSuchEntityException, NoAccessException {
         Session session = null;
         try {
@@ -53,17 +58,19 @@ public class UserHiberDao implements UserDao {
                 throw new DaoSystemException("User exists");
             }
             UserdbEntity user = new UserdbEntity();
+
             user.setEmail(email);
             user.setPassword(password);
             user.setName(login);
             user.setRoleByUserRole(new RoleEntity());
+
+            //    entityManager.persist(user);
             session.save(user);
             session.getTransaction().commit();
             return user;
         } finally {
-            if (session != null)
+            if (session != null && session.isConnected())
                 session.close();
         }
-
     }
 }

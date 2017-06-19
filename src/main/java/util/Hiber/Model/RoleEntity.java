@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "role")
-public class RoleEntity {
+public class RoleEntity extends AbstractModel{
     private String role = "user";
 
     @Id

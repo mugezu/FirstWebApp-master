@@ -2,15 +2,14 @@ package controller;
 
 import DAO.OrderDao;
 import exception.DaoSystemException;
-import exception.NoAccessException;
 import exception.NoSuchEntityException;
+import org.apache.log4j.Logger;
 import util.Hiber.Model.BasketProductsEntity;
 import util.Hiber.Model.ProductdbEntity;
 import util.Hiber.Model.UserdbEntity;
 import util.Spring.SpringContext;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,11 +24,13 @@ import java.util.Map;
 /**
  * Created by Роман on 13.06.2017.
  */
-public class BuyOrderController extends HttpServlet {
+public class BuyOrderController extends AbstractHttpServlet {
     private static final String PAGE_ERROR = "error.jsp";
     private static final String Attribute_storeProducts = "basketProducts";
     private static final String Attribute_TotalMoney = "totalMoney";
     private static final String ATTRIBUTE_MODEL_TO_VIEW_USER = "user";
+
+    protected final Logger log = Logger.getLogger(this.getClass());
 
     private static OrderDao orderDao = (OrderDao) SpringContext.getInstance().getContext().getBean("orderDao");
 
@@ -40,7 +41,7 @@ public class BuyOrderController extends HttpServlet {
             UserdbEntity user = (UserdbEntity) session.getAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER);
             Map<ProductdbEntity, Integer> products = (Map) session.getAttribute(Attribute_storeProducts);
             if (products == null) {
-                throw new NoSuchEntityException("Basket empty");
+                throw new NoSuchEntityException("Basket is empty");
             }
             Iterator<ProductdbEntity> iProsucts = products.keySet().iterator();
             Iterator<Integer> iCountProduct = products.values().iterator();
@@ -53,16 +54,13 @@ public class BuyOrderController extends HttpServlet {
                 oneOrder.setDate(new Date(System.currentTimeMillis()));
                 basket.add(oneOrder);
             }
-
-            orderDao.addOrder(basket);
+            orderDao.addOrders(basket);
             session.setAttribute(Attribute_storeProducts, null);
             session.setAttribute(Attribute_TotalMoney, null);
-
             return;
-        } catch (DaoSystemException | NoAccessException | NoSuchEntityException e) {
-            e.printStackTrace();
+        } catch (DaoSystemException | NoSuchEntityException e) {
+            log.warn(e.getMessage());
         }
         resp.sendRedirect(PAGE_ERROR);
-
     }
 }

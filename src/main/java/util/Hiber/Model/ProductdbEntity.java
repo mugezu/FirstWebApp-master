@@ -8,23 +8,14 @@ import java.util.Collection;
  */
 @Entity
 @Table(name = "productdb")
-public class ProductdbEntity {
-    private int id;
+public class ProductdbEntity extends AbstractModel {
     private String name;
     private long price;
     private String description;
     private int count;
     private Collection<BasketProductsEntity> basketProductsById;
 
-    @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "name", nullable = false, length = 45)

@@ -1,6 +1,7 @@
 package DAO;
 
-import exception.*;
+import exception.DaoSystemException;
+import exception.NoSuchEntityException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -9,16 +10,17 @@ import org.hibernate.criterion.Restrictions;
 import util.Hiber.Hiber;
 import util.Hiber.Model.BasketProductsEntity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by Роман on 16.06.2017.
  */
-public class OrderHiberDao implements OrderDao {
+public class OrderHiberDao extends GenericDAO<BasketProductsEntity> implements OrderDao {
 
     @Override
-    public List<BasketProductsEntity> selectById_buyer(int id_buyer) throws DaoSystemException, NoAccessException, NoSuchEntityException {
-        List<BasketProductsEntity> basketProductsEntities = null;
+    public List<BasketProductsEntity> selectById_buyer(int id_buyer) throws DaoSystemException, NoSuchEntityException {
+        List<BasketProductsEntity> basketProductsEntities = new LinkedList<>();
 
         Session session = null;
         try {
@@ -26,29 +28,24 @@ public class OrderHiberDao implements OrderDao {
             Criteria criteria = session.createCriteria(BasketProductsEntity.class);
             criteria.add(Restrictions.eq("userdbByIdBuyer.id", id_buyer));
             criteria.addOrder(Order.asc("id"));
-            basketProductsEntities = criteria.list();
-            if (basketProductsEntities == null)
+            if (criteria.list() == null)
                 throw new NoSuchEntityException("Orders list empty");
-            return basketProductsEntities;
+            basketProductsEntities = criteria.list();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            if (session != null)
+            if (session != null && session.isConnected())
                 session.close();
+            return basketProductsEntities;
+
         }
-
     }
 
-    @Override
-    public List<BasketProductsEntity> selectAll() throws DaoSystemException, NoAccessException, NoSuchEntityException {
-        return null;
-    }
 
     @Override
-    public BasketProductsEntity selectById_order(int id_order) throws DaoSystemException, NoAccessException, NoSuchEntityException {
-        return null;
-    }
-
-    @Override
-    public boolean addOrder(List<BasketProductsEntity> orders) throws DaoSystemException, NoAccessException, NoSuchEntityException {
+    public boolean addOrders(List<BasketProductsEntity> orders) throws DaoSystemException, NoSuchEntityException {
         Session session = Hiber.getSessionFactory().openSession();
         try {
             session.beginTransaction();
@@ -61,10 +58,12 @@ public class OrderHiberDao implements OrderDao {
                     }
             );
             session.getTransaction().commit();
+        } catch (Exception e) {
+            log.warn("Adding entities failed ");
         } finally {
             if (session != null)
                 session.close();
+            return true;
         }
-        return true;
     }
 }

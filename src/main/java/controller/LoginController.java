@@ -1,8 +1,10 @@
 package controller;
 
 
-import exception.*;
 import DAO.UserDao;
+import exception.DaoSystemException;
+import exception.NoAccessException;
+import exception.NoSuchEntityException;
 import org.springframework.context.annotation.Configuration;
 import util.Hiber.Model.UserdbEntity;
 import util.Spring.SpringContext;
@@ -10,17 +12,15 @@ import util.Spring.SpringContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Created by user on 15.11.2016.
  */
 @Configuration
-public class LoginController extends HttpServlet {
+public class LoginController extends AbstractHttpServlet {
     private static final String PARAM_LOGIN = "login";
     private static final String PARAM_PASSWORD = "password";
     private static final String ATTRIBUTE_MODEL_TO_VIEW_USER = "user";
@@ -42,9 +42,8 @@ public class LoginController extends HttpServlet {
             RequestDispatcher view = req.getRequestDispatcher(PAGE_OK);
             view.forward(req, resp);
             return;
-        } catch (NoAccessException | NoSuchEntityException | DaoSystemException  e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        } catch (NoAccessException | NoSuchEntityException | DaoSystemException e) {
+            log.warn(e.getMessage());
         }
         req.setAttribute(ATTRIBUTE_MASSAGE, "Ошибка входа");
         RequestDispatcher view = req.getRequestDispatcher(PAGE_ERROR_ACCESS);
@@ -72,7 +71,7 @@ public class LoginController extends HttpServlet {
             view.forward(req, resp);
             return;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
         resp.sendRedirect(PAGE_ERROR_ACCESS);
     }

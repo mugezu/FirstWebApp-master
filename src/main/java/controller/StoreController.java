@@ -20,7 +20,7 @@ import static java.util.Collections.singletonMap;
 /**
  * Created by user on 22.11.2016.
  */
-public class StoreController extends HttpServlet {
+public class StoreController extends AbstractHttpServlet {
     private static final String Attribute_storeProducts = "basketProducts";
     private static final String Attribute_TotalMoney = "totalMoney";
     private static final String PARAM_ID = "id";
@@ -55,7 +55,7 @@ public class StoreController extends HttpServlet {
                 resp.sendRedirect(PAGE_OK);
                 return;
             } catch (NoSuchEntityException | DaoSystemException e) {
-                e.printStackTrace();
+                log.warn(e.getMessage());
             }
         }
         resp.sendRedirect(PAGE_ERROR);
