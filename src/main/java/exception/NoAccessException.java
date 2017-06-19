@@ -1,4 +1,4 @@
-package DAO;
+package exception;
 
 /**
  * Created by user on 17.11.2016.

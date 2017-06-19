@@ -1,9 +1,9 @@
 package controller;
 
-import DAO.DaoSystemException;
-import DAO.NoAccessException;
-import DAO.NoSuchEntityException;
 import DAO.OrderDao;
+import exception.DaoSystemException;
+import exception.NoAccessException;
+import exception.NoSuchEntityException;
 import util.Hiber.Model.BasketProductsEntity;
 import util.Hiber.Model.ProductdbEntity;
 import util.Hiber.Model.UserdbEntity;
@@ -36,28 +36,33 @@ public class BuyOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        UserdbEntity user = (UserdbEntity) session.getAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER);
-        Map<ProductdbEntity, Integer> products = (Map) session.getAttribute(Attribute_storeProducts);
-        Iterator<ProductdbEntity> iProsucts = products.keySet().iterator();
-        Iterator<Integer> iCountProduct = products.values().iterator();
-        List<BasketProductsEntity> basket = new LinkedList<>();
-        int i = 0;
-        while (iProsucts.hasNext()) {
-            BasketProductsEntity oneOrder = new BasketProductsEntity();
-            oneOrder.setCountProduct(iCountProduct.next());
-            oneOrder.setUserdbByIdBuyer(user);
-            oneOrder.setProductdbByIdProduct(iProsucts.next());
-            oneOrder.setDate(new Date(System.currentTimeMillis()));
-            basket.add(oneOrder);
-            i++;
-        }
         try {
+            UserdbEntity user = (UserdbEntity) session.getAttribute(ATTRIBUTE_MODEL_TO_VIEW_USER);
+            Map<ProductdbEntity, Integer> products = (Map) session.getAttribute(Attribute_storeProducts);
+            if (products == null) {
+                throw new NoSuchEntityException("Basket empty");
+            }
+            Iterator<ProductdbEntity> iProsucts = products.keySet().iterator();
+            Iterator<Integer> iCountProduct = products.values().iterator();
+            List<BasketProductsEntity> basket = new LinkedList<>();
+            while (iProsucts.hasNext()) {
+                BasketProductsEntity oneOrder = new BasketProductsEntity();
+                oneOrder.setCountProduct(iCountProduct.next());
+                oneOrder.setUserdbByIdBuyer(user);
+                oneOrder.setProductdbByIdProduct(iProsucts.next());
+                oneOrder.setDate(new Date(System.currentTimeMillis()));
+                basket.add(oneOrder);
+            }
+
             orderDao.addOrder(basket);
             session.setAttribute(Attribute_storeProducts, null);
             session.setAttribute(Attribute_TotalMoney, null);
+
+            return;
         } catch (DaoSystemException | NoAccessException | NoSuchEntityException e) {
             e.printStackTrace();
         }
+        resp.sendRedirect(PAGE_ERROR);
 
     }
 }

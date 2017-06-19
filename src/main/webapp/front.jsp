@@ -21,6 +21,10 @@
     <br>
     <input type="submit" value="Entry">
 </form>
+
+<br/>
+<a href="/registration.jsp">Зареестироваться</a>
+<br/>
 <b2/>
 Сессия: вы были у нас на сайте ${counterSession} раз
 <br/>

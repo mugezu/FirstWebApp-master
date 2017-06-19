@@ -1,5 +1,6 @@
 package DAO;
 
+import exception.*;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import util.Hiber.Hiber;

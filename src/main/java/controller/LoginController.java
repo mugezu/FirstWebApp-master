@@ -1,9 +1,7 @@
 package controller;
 
 
-import DAO.DaoSystemException;
-import DAO.NoAccessException;
-import DAO.NoSuchEntityException;
+import exception.*;
 import DAO.UserDao;
 import org.springframework.context.annotation.Configuration;
 import util.Hiber.Model.UserdbEntity;
@@ -44,7 +42,7 @@ public class LoginController extends HttpServlet {
             RequestDispatcher view = req.getRequestDispatcher(PAGE_OK);
             view.forward(req, resp);
             return;
-        } catch (NoAccessException | NoSuchEntityException | DaoSystemException | SQLException e) {
+        } catch (NoAccessException | NoSuchEntityException | DaoSystemException  e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }

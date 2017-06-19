@@ -1,8 +1,8 @@
 package controller;
 
-import DAO.DaoSystemException;
-import DAO.NoSuchEntityException;
 import DAO.ProductDao;
+import exception.DaoSystemException;
+import exception.NoSuchEntityException;
 import util.Hiber.Model.ProductdbEntity;
 import util.Spring.SpringContext;
 

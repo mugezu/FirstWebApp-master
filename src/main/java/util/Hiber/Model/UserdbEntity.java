@@ -17,6 +17,7 @@ public class UserdbEntity {
     private RoleEntity roleByUserRole;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -90,6 +91,7 @@ public class UserdbEntity {
     }
 
     @ManyToOne
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JoinColumn(name = "user_role", referencedColumnName = "role", nullable = false)
     public RoleEntity getRoleByUserRole() {
         return roleByUserRole;
