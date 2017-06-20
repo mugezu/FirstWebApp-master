@@ -4,7 +4,8 @@
 
     <display-name>HelloWorld Application</display-name>
     <welcome-file-list>
-        <welcome-file>front.jsp</welcome-file>
+     <!--   <welcome-file>front.jsp</welcome-file>-->
+        <welcome-file>login.do</welcome-file>
     </welcome-file-list>
 
     <context-param>

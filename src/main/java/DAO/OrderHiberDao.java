@@ -66,4 +66,9 @@ public class OrderHiberDao extends GenericDAO<BasketProductsEntity> implements O
             return true;
         }
     }
+
+    @Override
+    protected Class<BasketProductsEntity> getClassDef() {
+        return BasketProductsEntity.class;
+    }
 }

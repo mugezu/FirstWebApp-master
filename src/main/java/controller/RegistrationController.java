@@ -48,6 +48,7 @@ public class RegistrationController extends AbstractHttpServlet {
             return;
         } catch (DaoSystemException | NoSuchEntityException e) {
             log.warn(e.getMessage());
+            e.printStackTrace();
             req.setAttribute(ATTRIBUTE_MASSAGE, "Error registration: " + e.getMessage());
             RequestDispatcher view = req.getRequestDispatcher(PAGE_ERROR_ACCESS);
             view.forward(req, resp);

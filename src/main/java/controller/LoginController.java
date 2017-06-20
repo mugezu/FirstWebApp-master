@@ -44,10 +44,11 @@ public class LoginController extends AbstractHttpServlet {
             return;
         } catch (NoAccessException | NoSuchEntityException | DaoSystemException e) {
             log.warn(e.getMessage());
+            req.setAttribute(ATTRIBUTE_MASSAGE, e.getMessage());
+            RequestDispatcher view = req.getRequestDispatcher(PAGE_ERROR_ACCESS);
+            view.forward(req, resp);
         }
-        req.setAttribute(ATTRIBUTE_MASSAGE, "Ошибка входа");
-        RequestDispatcher view = req.getRequestDispatcher(PAGE_ERROR_ACCESS);
-        view.forward(req, resp);
+
     }
 
     @Override

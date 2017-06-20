@@ -16,6 +16,9 @@ import java.util.List;
  * Created by Роман on 15.06.2017.
  */
 public class UserHiberDao extends GenericDAO<UserdbEntity> implements UserDao {
+    public UserHiberDao() {
+
+    }
 
     //  private EntityManager entityManager = (EntityManager) SpringContext.getInstance().getContext().getBean("entityManager");
 
@@ -31,11 +34,10 @@ public class UserHiberDao extends GenericDAO<UserdbEntity> implements UserDao {
             Criteria criteria = session.createCriteria(UserdbEntity.class);
             criteria.add(Restrictions.eq("name", login));
             criteria.add(Restrictions.eq("password", password));
-            userbd = criteria.list();
-            if (userbd.isEmpty()) {
+            if (criteria.list().isEmpty()) {
                 throw new NoAccessException("Invalid login or password");
             }
-            resutl = userbd.get(0);
+            resutl = (UserdbEntity) criteria.uniqueResult();
         } finally {
             if (!session.isConnected())
                 session.close();
@@ -72,5 +74,10 @@ public class UserHiberDao extends GenericDAO<UserdbEntity> implements UserDao {
             if (session != null && session.isConnected())
                 session.close();
         }
+    }
+
+    @Override
+    protected Class<UserdbEntity> getClassDef() {
+        return UserdbEntity.class;
     }
 }

@@ -79,7 +79,6 @@ public class UserdbEntity extends AbstractModel {
     }
 
     @ManyToOne
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @JoinColumn(name = "user_role", referencedColumnName = "role", nullable = false)
     public RoleEntity getRoleByUserRole() {
         return roleByUserRole;
