@@ -6,6 +6,7 @@ import exception.NoSuchEntityException;
 import util.Hiber.Model.RoleEntity;
 import util.Hiber.Model.UserdbEntity;
 import util.Spring.SpringContext;
+import util.other.Other;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -52,6 +53,8 @@ public class RegistrationController extends AbstractHttpServlet {
             req.setAttribute(ATTRIBUTE_MASSAGE, "Error registration: " + e.getMessage());
             RequestDispatcher view = req.getRequestDispatcher(PAGE_ERROR_ACCESS);
             view.forward(req, resp);
+        } catch (Exception e) {
+            log.error(Other.stackTrace(e));
         }
 
     }

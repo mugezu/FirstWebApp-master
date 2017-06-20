@@ -5,12 +5,13 @@ import exception.NoSuchEntityException;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import util.Hiber.Hiber;
 import util.Hiber.Model.AbstractModel;
-import util.Hiber.Model.ProductdbEntity;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,23 +21,33 @@ import java.util.List;
 public abstract class GenericDAO<T extends AbstractModel> implements IGenericDAO<T> {
     protected final Logger log = Logger.getLogger(this.getClass());
 
+    SessionFactory sessionFactory = Hiber.getSessionFactory();
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    // private EntityManager entityManager = (EntityManager) SpringContext.getInstance().getContext().getBean("entityManagerFactory");
+
     @Override
     public T selectById(int id) throws DaoSystemException, NoSuchEntityException {
         T entity = null;
 
         Session session = null;
         try {
-            session = Hiber.getSessionFactory().openSession();
+            entity = entityManager.find(getClassDef(), id);
+            entityManager.close();
+           /* session = Hiber.getSessionFactory().openSession();
             Criteria criteria = session.createCriteria(getClassDef());
             criteria.add(Restrictions.eq("id", id));
             criteria.addOrder(Order.asc("id"));
             if (criteria.uniqueResult() == null)
                 throw new NoSuchEntityException("No such entity ");
-            entity = (T) criteria.uniqueResult();
-        } finally {
-            if (session != null && session.isConnected())
-                session.close();
+            entity = (T) criteria.uniqueResult();*/
             return entity;
+        } finally {
+          /*  if (session != null && session.isConnected())
+                session.close();
+            return entity;*/
         }
     }
 
@@ -51,17 +62,9 @@ public abstract class GenericDAO<T extends AbstractModel> implements IGenericDAO
             Criteria criteria = session.createCriteria(getClassDef());
             criteria.addOrder(Order.asc("id"));
             if (criteria.list().isEmpty()) {
-                System.out.println("lalal***///////////////");
                 throw new NoSuchEntityException("No such entities: data base empty");
             }
-            for (ProductdbEntity prod : (List<ProductdbEntity>) criteria.list()) {
-                System.out.println(">*---->>>..." + prod.getId());
-            }
             entities.addAll((List<T>) criteria.list());
-            System.out.println("llalal");
-            for (T prod : entities) {
-                System.out.println(">>>>>>>>>>..." + prod.getId());
-            }
         } finally {
             if (session != null && session.isConnected())
                 session.close();
@@ -76,6 +79,7 @@ public abstract class GenericDAO<T extends AbstractModel> implements IGenericDAO
         try {
             session = Hiber.getSessionFactory().openSession();
             session.beginTransaction();
+            //   entityManager.persist(entity);
             session.save(entity);
             session.flush();
             session.getTransaction().commit();
@@ -90,6 +94,10 @@ public abstract class GenericDAO<T extends AbstractModel> implements IGenericDAO
                 session.close();
             return result;
         }
+    }
+
+    protected final Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
     }
 
     protected abstract Class<T> getClassDef();

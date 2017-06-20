@@ -6,6 +6,7 @@ import exception.NoSuchEntityException;
 import util.Hiber.Model.BasketProductsEntity;
 import util.Hiber.Model.UserdbEntity;
 import util.Spring.SpringContext;
+import util.other.Other;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public class ListOrderController extends AbstractHttpServlet {
     private static final String PAGE_OK = "allOrder.jsp";
     private static final String PARAM_ORDERS = "orders";
     private static final String ATTRIBUTE_MODEL_TO_VIEW_USER = "user";
-    private OrderDao model = (OrderDao) SpringContext.getInstance().getContext().getBean("orderDao");
+    private OrderDao model =(OrderDao) SpringContext.getInstance().getContext().getBean("orderDao");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,6 +38,8 @@ public class ListOrderController extends AbstractHttpServlet {
             return;
         } catch (DaoSystemException | NoSuchEntityException e) {
             log.warn(e.getMessage());
+        } catch (Exception e) {
+            log.error(Other.stackTrace(e));
         }
         resp.sendRedirect(PAGE_ERROR);
     }

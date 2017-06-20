@@ -1,8 +1,11 @@
 package controller;
 
 import DAO.ProductDao;
+import exception.DaoSystemException;
+import exception.NoSuchEntityException;
 import util.Hiber.Model.ProductdbEntity;
 import util.Spring.SpringContext;
+import util.other.Other;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,9 +32,11 @@ public class ProductController extends AbstractHttpServlet {
             req.setAttribute(ATTRIBUTE_ALL_PRODUCTS, productdbEntity);
             req.getRequestDispatcher(PAGE_OK).forward(req, resp);
             return;
-        } catch (Exception e) {
+        } catch (NoSuchEntityException | DaoSystemException e) {
             log.warn(e.getMessage());
             e.printStackTrace();
+        } catch (Exception e) {
+            log.error(Other.stackTrace(e));
         }
         resp.sendRedirect(PAGE_ERROR_ACCESS);
     }

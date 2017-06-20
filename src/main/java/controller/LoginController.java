@@ -8,6 +8,7 @@ import exception.NoSuchEntityException;
 import org.springframework.context.annotation.Configuration;
 import util.Hiber.Model.UserdbEntity;
 import util.Spring.SpringContext;
+import util.other.Other;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,12 +48,15 @@ public class LoginController extends AbstractHttpServlet {
             req.setAttribute(ATTRIBUTE_MASSAGE, e.getMessage());
             RequestDispatcher view = req.getRequestDispatcher(PAGE_ERROR_ACCESS);
             view.forward(req, resp);
+        } catch (Exception e) {
+            log.error(Other.stackTrace(e));
         }
 
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String login = null;
         String password = null;
         Cookie[] cookies = req.getCookies();

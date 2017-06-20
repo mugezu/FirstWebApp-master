@@ -20,11 +20,11 @@ public class DataFilter extends AbstractFilter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println(">>Init DataFilter");
-        System.out.println(">>Init Hibernate");
+        log.info(">>Init DataFilter");
+        log.info(">>Init Hibernate");
         Hiber.getSessionFactory();
-        System.out.println(">>Init SpringContext");
-        SpringContext.getInstance();
+        log.info(">>Init SpringContext");
+        SpringContext.getInstance().getContext();
         this.filterConfig = filterConfig;
     }
 
@@ -34,27 +34,27 @@ public class DataFilter extends AbstractFilter {
         Enumeration<String> attributesEnum = request.getSession().getAttributeNames();
         Cookie[] cookieEnum = request.getCookies();
 
-        System.out.println(">>Start DataFilter. List Parameters request:");
-        System.out.println(request.getRequestURI());
+        log.info(">>Start DataFilter. List Parameters request:");
+        log.info(request.getRequestURI());
         while (parametrsEnumeration.hasMoreElements()) {
             String s = parametrsEnumeration.nextElement();
             String s1 = request.getParameter(s);
-            System.out.println(">>" + s + "=" + s1);
+            log.info(">>" + s + "=" + s1);
         }
-        System.out.println(">>List attributes session:");
+        log.info(">>List attributes session:");
         while (attributesEnum.hasMoreElements()) {
             String s = attributesEnum.nextElement();
             String s1 = request.getSession().getAttribute(s).toString();
-            System.out.println(">>" + s + "=" + s1);
+            log.info(">>" + s + "=" + s1);
         }
-        System.out.println();
-        System.out.println(">>Cookie:");
+
+        log.info(">>Cookie:");
         if (cookieEnum != null) {
             for (int i = 0; i < cookieEnum.length; i++) {
-                System.out.println(">>" + cookieEnum[i].getName() + " = " + cookieEnum[i].getValue());
+                log.info(">>" + cookieEnum[i].getName() + " = " + cookieEnum[i].getValue());
             }
         }
-        System.out.println();
+
         chain.doFilter(request, response);
     }
 }

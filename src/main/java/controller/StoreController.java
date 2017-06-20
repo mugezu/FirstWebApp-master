@@ -5,9 +5,9 @@ import exception.DaoSystemException;
 import exception.NoSuchEntityException;
 import util.Hiber.Model.ProductdbEntity;
 import util.Spring.SpringContext;
+import util.other.Other;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -56,6 +56,8 @@ public class StoreController extends AbstractHttpServlet {
                 return;
             } catch (NoSuchEntityException | DaoSystemException e) {
                 log.warn(e.getMessage());
+            } catch (Exception e) {
+                log.error(Other.stackTrace(e));
             }
         }
         resp.sendRedirect(PAGE_ERROR);

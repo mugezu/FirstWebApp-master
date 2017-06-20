@@ -1,4 +1,4 @@
-/*package util.Spring;
+package util.Spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ public class PersistenceJPAConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        //em.setPackagesToScan(new String[]{"org.baeldung.persistence.model"});
+       // em.setPackagesToScan(new String[]{"org.baeldung.persistence.model"});
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -61,4 +61,4 @@ public class PersistenceJPAConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         return properties;
     }
-}*/
+}

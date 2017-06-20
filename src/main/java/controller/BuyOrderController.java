@@ -8,6 +8,7 @@ import util.Hiber.Model.BasketProductsEntity;
 import util.Hiber.Model.ProductdbEntity;
 import util.Hiber.Model.UserdbEntity;
 import util.Spring.SpringContext;
+import util.other.Other;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +61,8 @@ public class BuyOrderController extends AbstractHttpServlet {
             return;
         } catch (DaoSystemException | NoSuchEntityException e) {
             log.warn(e.getMessage());
+        } catch (Exception e) {
+            log.error(Other.stackTrace(e));
         }
         resp.sendRedirect(PAGE_ERROR);
     }

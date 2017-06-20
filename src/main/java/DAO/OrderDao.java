@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Роман on 14.06.2017.
  */
-public interface OrderDao extends IGenericDAO<BasketProductsEntity> {
+public interface OrderDao extends IGenericDAO<BasketProductsEntity>{
     public List<BasketProductsEntity> selectById_buyer(int id_buyer) throws DaoSystemException,  NoSuchEntityException;
 
     public boolean addOrders(List<BasketProductsEntity> orders) throws DaoSystemException,  NoSuchEntityException;
